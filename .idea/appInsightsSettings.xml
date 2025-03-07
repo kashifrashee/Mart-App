@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.martapp" />
+                  <option name="mobileSdkAppId" value="1:1069947948113:android:7c0ecdb8e460cb81b37c70" />
+                  <option name="projectId" value="mart-app-35bef" />
+                  <option name="projectNumber" value="1069947948113" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

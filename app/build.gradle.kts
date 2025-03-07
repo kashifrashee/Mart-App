@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -58,14 +61,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation("androidx.navigation:navigation-compose:2.8.8")
 
 // ViewModel & LiveData
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
 
 // Dagger Hilt for Dependency Injection
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-compiler:2.51")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
 // Retrofit for API calls
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -82,4 +87,24 @@ dependencies {
 
 // Coil (Image Loading)
     implementation("io.coil-kt:coil-compose:2.6.0")
+
+    // Bcrypt for password hashing
+    implementation("org.mindrot:jbcrypt:0.4")
+
+    // SplashScreen API
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    implementation("androidx.vectordrawable:vectordrawable-animated:1.2.0")
+    implementation("androidx.compose.ui:ui-graphics:1.7.8")
+
+    implementation("androidx.appcompat:appcompat:1.7.0")
+
+    implementation("androidx.datastore:datastore-preferences:1.1.3")
+    implementation("androidx.datastore:datastore-core:1.1.3")
+
+    implementation("androidx.navigation:navigation-compose:2.8.8")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
 }

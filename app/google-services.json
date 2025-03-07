@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1069947948113",
+    "project_id": "mart-app-35bef",
+    "storage_bucket": "mart-app-35bef.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069947948113:android:7c0ecdb8e460cb81b37c70",
+        "android_client_info": {
+          "package_name": "com.example.martapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkukjIt8anzkkCKwG41HHaBMdtE4lhoMQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
