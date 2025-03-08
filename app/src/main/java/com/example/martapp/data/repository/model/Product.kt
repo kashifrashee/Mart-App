@@ -7,6 +7,8 @@ data class Product(
     val title: String,
     val price: Double,
     val stock: Int,
+    val rating: Double,
+    val description: String,
     @SerializedName("thumbnail") val image: String  // Use `thumbnail` as the main image
 
 

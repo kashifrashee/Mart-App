@@ -12,15 +12,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.martapp.presentation.viewmodel.screens.FavoritesScreen
-import com.example.martapp.presentation.viewmodel.screens.FavoritesScreenNavigation
 import com.example.martapp.presentation.viewmodel.screens.BottomNavigationBar
 import com.example.martapp.presentation.viewmodel.screens.CategoriesScreen
 import com.example.martapp.presentation.viewmodel.screens.CategoriesScreenNavigation
+import com.example.martapp.presentation.viewmodel.screens.FavoritesScreen
+import com.example.martapp.presentation.viewmodel.screens.FavoritesScreenNavigation
 import com.example.martapp.presentation.viewmodel.screens.HomeScreen
 import com.example.martapp.presentation.viewmodel.screens.HomeScreenNavigation
 import com.example.martapp.presentation.viewmodel.screens.LoginNavigationDestination
 import com.example.martapp.presentation.viewmodel.screens.LoginScreen
+import com.example.martapp.presentation.viewmodel.screens.ProductDetailsNavigation
+import com.example.martapp.presentation.viewmodel.screens.ProductDetailsScreen
 import com.example.martapp.presentation.viewmodel.screens.ShoppingCartScreen
 import com.example.martapp.presentation.viewmodel.screens.ShoppingCartScreenNavigation
 import com.example.martapp.presentation.viewmodel.screens.SignUpNavigation
@@ -71,7 +73,18 @@ fun AppNavigator(
             }
 
             composable(HomeScreenNavigation.route) {
-                HomeScreen()
+                HomeScreen(navController = navController)
+            }
+
+            composable("${ProductDetailsNavigation.route}/{productId}") { backStackEntry ->
+                val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
+                productId?.let {
+                    ProductDetailsScreen(
+                        productId = it,
+                        navController = navController
+                    )
+                }
+
             }
 
             composable(CategoriesScreenNavigation.route) {
@@ -83,11 +96,15 @@ fun AppNavigator(
             }
 
             composable(ShoppingCartScreenNavigation.route) {
-                ShoppingCartScreen()
+                ShoppingCartScreen(
+                    navController = navController
+                )
             }
+
         }
 
     }
 
 
 }
+

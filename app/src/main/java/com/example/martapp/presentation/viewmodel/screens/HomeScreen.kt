@@ -1,6 +1,9 @@
 package com.example.martapp.presentation.viewmodel.screens
 
+import android.R.attr.rating
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import com.example.martapp.navigation.NavigationDestination
 import com.example.martapp.presentation.viewmodel.ProductViewModel
@@ -37,13 +42,15 @@ object HomeScreenNavigation : NavigationDestination {
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    productViewModel: ProductViewModel = hiltViewModel()
+    productViewModel: ProductViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val products = productViewModel.products.collectAsState()
     val categories = productViewModel.categories.value
     val isLoading = productViewModel.isLoading.value
 
     LaunchedEffect(Unit) {
+        Log.d("HomeScreen", "Fetching products and categories")
         productViewModel.fetchProducts()
         productViewModel.fetchCategories()
     }
@@ -59,16 +66,19 @@ fun HomeScreen(
         )
 
         if (isLoading) {
+            Log.d("HomeScreen", "Loading data....")
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
         } else if (categories.isEmpty() && products.value.isEmpty()) {
+            Log.d("HomeScreen", "No products or categories available")
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(text = "No products or categories available", color = Color.Gray)
             }
         } else {
             LazyRow(modifier = Modifier.padding(8.dp)) {
                 items(categories) { category ->
+                    Log.d("HomeScreen", "Displaying category: $category")
                     CategoryItem(category.name)
                 }
             }
@@ -81,7 +91,18 @@ fun HomeScreen(
             )
             LazyColumn(modifier = Modifier.padding(8.dp)) {
                 items(products.value) { product ->
-                    ProductItem(product.title, product.image, product.price, product.stock)
+                    Log.d("HomeScreen", "Displaying product: ${product.title}")
+                    ProductItem(
+                        product.title,
+                        product.image,
+                        product.price,
+                        product.stock,
+                        product.rating,
+                        onClick ={
+                            Log.d("Product Details HS", "Navigating to product details: ${product.id}")
+                            navController.navigate("${ProductDetailsNavigation.route}/${product.id}")
+                        }
+                    )
                 }
             }
         }
@@ -103,10 +124,21 @@ fun CategoryItem(category: String) {
 }
 
 @Composable
-fun ProductItem(title: String, image: String, price: Double, stock: Int) {
+fun ProductItem(
+    title: String,
+    image: String,
+    price: Double,
+    stock: Int,
+    rating: Double,
+    onClick: () -> Unit
+) {
     Card(modifier = Modifier
         .fillMaxWidth()
-        .padding(8.dp),
+        .padding(8.dp)
+        .clickable {
+            Log.d("ProductItem", "Product clicked: $title")
+            onClick()
+        },
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
         )
@@ -122,7 +154,8 @@ fun ProductItem(title: String, image: String, price: Double, stock: Int) {
             Column {
                 Text(text = title, style = MaterialTheme.typography.bodyLarge, color = Color.Black)
                 Text(text = "$${price}", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
-                Text(text = "$stock", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+                Text(text = "Stock: $stock", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+                Text(text = "Rating: ${rating}★", style = MaterialTheme.typography.bodyMedium, color = Color.DarkGray)
             }
         }
     }
