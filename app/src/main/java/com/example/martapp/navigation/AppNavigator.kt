@@ -13,8 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.martapp.presentation.viewmodel.screens.BottomNavigationBar
-import com.example.martapp.presentation.viewmodel.screens.CategoriesScreen
-import com.example.martapp.presentation.viewmodel.screens.CategoriesScreenNavigation
+import com.example.martapp.presentation.viewmodel.screens.SettingsScreen
+import com.example.martapp.presentation.viewmodel.screens.SettingsScreenNavigation
 import com.example.martapp.presentation.viewmodel.screens.FavoritesScreen
 import com.example.martapp.presentation.viewmodel.screens.FavoritesScreenNavigation
 import com.example.martapp.presentation.viewmodel.screens.HomeScreen
@@ -87,8 +87,8 @@ fun AppNavigator(
 
             }
 
-            composable(CategoriesScreenNavigation.route) {
-                CategoriesScreen()
+            composable(SettingsScreenNavigation.route) {
+                SettingsScreen()
             }
 
             composable(FavoritesScreenNavigation.route) {

@@ -5,15 +5,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.martapp.navigation.NavigationDestination
 
-object CategoriesScreenNavigation : NavigationDestination {
+object SettingsScreenNavigation : NavigationDestination {
     override val route: String = "categories"
     override val title: String = "Categories"
 }
 
 @Composable
-fun CategoriesScreen(modifier: Modifier = Modifier) {
+fun SettingsScreen(modifier: Modifier = Modifier) {
     Text(
-        text = "Categories Screen",
+        text = "Setting Screen",
         modifier = modifier
     )
 }

@@ -149,5 +149,13 @@ class ProductViewModel @Inject constructor(
         }
     }
 
+    fun clearCart() {
+        viewModelScope.launch {
+            cartRepository.clearCart()
+            Log.d("ProductViewModel", "Cleared cart")
+            fetchCartItems()
+        }
+    }
+
 
 }

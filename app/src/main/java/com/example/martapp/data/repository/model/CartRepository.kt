@@ -22,4 +22,8 @@ class CartRepository @Inject constructor(private val cartDao: CartDao) {
     suspend fun updateCartItem(productId: Int, quantity: Int, totalPrice: Double) {
         cartDao.updateCartItem(productId, quantity, totalPrice)
     }
+
+    suspend fun clearCart() {
+        cartDao.clearCart()
+    }
 }

@@ -35,11 +35,10 @@ fun BottomNavigationBar(
             R.drawable.baseline_home_max_24,
             HomeScreenNavigation.route
         ),
-
         NavigationItem(
-            "Categories",
-            R.drawable.baseline_category_24,
-            CategoriesScreenNavigation.route
+            "Cart",
+            R.drawable.baseline_add_shopping_cart_24,
+            ShoppingCartScreenNavigation.route
         ),
         NavigationItem(
             "Favorites",
@@ -47,14 +46,14 @@ fun BottomNavigationBar(
             FavoritesScreenNavigation.route
         ),
         NavigationItem(
-            "Cart",
-            R.drawable.baseline_add_shopping_cart_24,
-            ShoppingCartScreenNavigation.route
+            "Settings",
+            R.drawable.baseline_settings_24,
+            SettingsScreenNavigation.route
         ),
     )
 
     NavigationBar(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         navigationItems.forEachIndexed { index, navigationItem ->
             NavigationBarItem(
