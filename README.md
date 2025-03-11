@@ -1,4 +1,3 @@
-Here's a **README.md** file for your Mart App GitHub repository. It includes an overview, features, setup instructions, and more. You can modify it as needed.
 
 ```markdown
 # 🛒 Mart App
