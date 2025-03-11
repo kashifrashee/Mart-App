@@ -1,4 +1,4 @@
-package com.example.martapp.data.repository.database
+package com.example.martapp.data.repository.database.cart
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -20,6 +20,17 @@ interface CartDao {
     @Query("UPDATE cart_items SET quantity = :quantity, totalPrice = :totalPrice WHERE productId = :productId")
     suspend fun updateCartItem(productId: Int, quantity: Int, totalPrice: Double)
 
+
     @Query("DELETE FROM cart_items")
     suspend fun clearCart()
+
+
+    @Query("SELECT * FROM cart_items WHERE isFavorite = 1")
+    fun getFavorites(): Flow<List<CartItemEntity>>
+
+    @Query("SELECT * FROM cart_items WHERE productId = :productId LIMIT 1")
+    suspend fun getProductById(productId: Int): CartItemEntity?
+
+    @Query("UPDATE cart_items SET isFavorite = :isFav WHERE productId = :productId")
+    suspend fun updateFavoriteStatus(productId: Int, isFav: Boolean)
 }

@@ -1,4 +1,4 @@
-package com.example.martapp.data.repository.database
+package com.example.martapp.data.repository.database.cart
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

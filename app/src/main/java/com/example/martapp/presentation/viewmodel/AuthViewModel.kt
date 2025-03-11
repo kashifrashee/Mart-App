@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.martapp.data.repository.UserRepository
-import com.example.martapp.data.repository.database.User
+import com.example.martapp.data.repository.database.user.User
 import com.example.martapp.utils.PasswordUtil
 import com.example.martapp.utils.UserPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -72,6 +72,8 @@ class AuthViewModel @Inject constructor(
 
                 if (isPasswordCorrect) {
                     userPreferences.saveUserPhone(phoneNumber)
+                    userPreferences.saveUserId(user.id)
+                    Log.d("AuthViewModel", "User ID Saved: ${user.id}")
                     _authStatus.value = true
                     Log.d("AuthViewModel", "User logged in successfully")
                 } else {

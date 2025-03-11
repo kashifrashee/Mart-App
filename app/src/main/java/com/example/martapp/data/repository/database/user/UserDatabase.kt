@@ -1,4 +1,4 @@
-package com.example.martapp.data.repository.database
+package com.example.martapp.data.repository.database.user
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -8,3 +8,4 @@ abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
 }
+

@@ -5,33 +5,37 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.martapp.data.repository.ProductRepository
-import com.example.martapp.data.repository.database.CartItemEntity
-import com.example.martapp.data.repository.model.CartRepository
+import com.example.martapp.data.repository.database.cart.CartItemEntity
+import com.example.martapp.data.repository.CartRepository
 import com.example.martapp.data.repository.model.Category
 import com.example.martapp.data.repository.model.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductViewModel @Inject constructor(
-    private val repository: ProductRepository,
-    private val cartRepository: CartRepository
-) : ViewModel() {
+class ProductViewModel @Inject constructor(private val repository: ProductRepository, private val cartRepository: CartRepository, ) : ViewModel() {
 
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
 
+    private val _filteredProducts = MutableStateFlow<List<Product>>(emptyList())
+    val filteredProducts: StateFlow<List<Product>> = _filteredProducts
+
     private val _categories = mutableStateOf<List<Category>>(emptyList())
     val categories = _categories
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
+
+    private val _selectedCategory = MutableStateFlow("All")
+    val selectedCategory: StateFlow<String> = _selectedCategory
 
     private val _selectedProduct = MutableStateFlow<Product?>(null)
     val selectedProduct: StateFlow<Product?> = _selectedProduct
@@ -51,9 +55,10 @@ class ProductViewModel @Inject constructor(
 
     init {
         fetchCartItems()
+        fetchProducts()
     }
 
-    fun fetchCartItems() {
+    private fun fetchCartItems() {
         viewModelScope.launch {
             cartRepository.getCartItems().collect { items ->
                 _cartItems.value = items
@@ -69,6 +74,7 @@ class ProductViewModel @Inject constructor(
             _isLoading.value = true  // Show loading indicator
             try {
                 _products.value = repository.fetchProducts()
+                _filteredProducts.value = _products.value
                 Log.d("ProductViewModel", "Fetched products: ${_products.value}")
             } catch (e: Exception) {
                 Log.e("ProductViewModel", "Error fetching products", e)
@@ -99,13 +105,55 @@ class ProductViewModel @Inject constructor(
 
             _isLoading.value = true  // Show loading indicator
             try {
-                _categories.value = repository.fetchCategories().map { Category(it) }
+                _categories.value = listOf(Category("All")) + repository.fetchCategories().map { Category(it) }
                 Log.d("ProductViewModel Category", "Fetched categories: ${categories.value}")
             } catch (e: Exception) {
                 Log.e("ProductViewModel Category", "Error fetching categories", e)
             } finally {
                 _isLoading.value = false  // Hide loading indicator
             }
+        }
+    }
+
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+        filterProducts()
+    }
+
+    fun onCategorySelected(category: String) {
+        _selectedCategory.value = category
+
+        if (category == "All") {
+            fetchProducts(forceRefresh = true) // Fetch all products again
+        } else {
+            fetchProductsByCategory(category) // Fetch products of selected category
+        }
+    }
+
+    private fun fetchProductsByCategory(category: String) {
+        viewModelScope.launch {
+            _isLoading.value = true  // Show loading indicator
+            try {
+                val categoryProducts = repository.fetchProductsByCategory(category)
+                _filteredProducts.value = categoryProducts
+                Log.d("ProductViewModel", "Fetched category products: ${categoryProducts}")
+            } catch (e: Exception) {
+                Log.e("ProductViewModel", "Error fetching category products", e)
+            } finally {
+                _isLoading.value = false  // Hide loading indicator
+            }
+        }
+    }
+
+
+    private fun filterProducts() {
+        val query = _searchQuery.value
+        val category = _selectedCategory.value
+
+        _filteredProducts.value = _products.value.filter { product ->
+            val matchesSearch = product.title.lowercase().contains(query)  // Case-sensitive search
+            val matchesCategory = category == "All" || product.category == category
+            matchesSearch && matchesCategory
         }
     }
 
@@ -156,6 +204,5 @@ class ProductViewModel @Inject constructor(
             fetchCartItems()
         }
     }
-
 
 }

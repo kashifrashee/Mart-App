@@ -1,4 +1,4 @@
-package com.example.martapp.data.repository.database
+package com.example.martapp.data.repository.database.cart
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,5 +11,8 @@ data class CartItemEntity(
     val image: String,
     val price: Double,
     val quantity: Int,
-    val totalPrice: Double
+    val stock: Int = 0,
+    val rating: Double = 0.0,
+    val totalPrice: Double,
+    val isFavorite: Boolean = false
 )

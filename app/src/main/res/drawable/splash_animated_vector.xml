@@ -13,8 +13,8 @@
                 android:name="group"
                 android:pivotX="512"
                 android:pivotY="512"
-                android:scaleX="0.3"
-                android:scaleY="0.3">
+                android:scaleX="0.35"
+                android:scaleY="0.35">
                 <!-- Shopping Cart Path -->
                 <path
                     android:name="cart"
@@ -40,32 +40,26 @@
             <set>
                 <objectAnimator
                     android:propertyName="scaleX"
-                    android:duration="700"
-                    android:valueFrom="0.3"
+                    android:duration="500"
+                    android:valueFrom="0.35"
                     android:repeatCount="infinite"
                     android:repeatMode="reverse"
-                    android:valueTo="0.5"
+                    android:valueTo="0.4"
                     android:valueType="floatType"
                     android:interpolator="@android:anim/overshoot_interpolator"/>
                 <objectAnimator
                     android:propertyName="scaleY"
-                    android:duration="700"
-                    android:valueFrom="0.3"
-                    android:valueTo="0.5"
+                    android:duration="500"
+                    android:valueFrom="0.35"
+                    android:valueTo="0.4"
                     android:repeatMode="reverse"
                     android:repeatCount="infinite"
                     android:valueType="floatType"
                     android:interpolator="@android:anim/overshoot_interpolator"/>
-                <objectAnimator
-                    android:propertyName="rotation"
-                    android:startOffset="125"
-                    android:duration="900"
-                    android:valueFrom="0"
-                    android:valueTo="360"
-                    android:repeatCount="infinite"
-                    android:valueType="floatType"
-                    android:interpolator="@android:interpolator/fast_out_slow_in"/>
             </set>
         </aapt:attr>
     </target>
 </animated-vector>
+
+
+

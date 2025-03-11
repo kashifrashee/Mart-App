@@ -2,10 +2,7 @@ package com.example.martapp.data.repository
 
 import android.util.Log
 import com.example.martapp.data.repository.api.ProductApiService
-import com.example.martapp.data.repository.database.CartDao
-import com.example.martapp.data.repository.database.CartItemEntity
 import com.example.martapp.data.repository.model.Product
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,6 +42,10 @@ class ProductRepository @Inject constructor(
             Log.e("ProductRepository", "Failed to fetch product", e)
             null
         }
+    }
+
+    suspend fun fetchProductsByCategory(category: String): List<Product> {
+        return productApiService.getProductsByCategory(category).products
     }
 
 

@@ -13,9 +13,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,12 +61,12 @@ fun LoginScreen(
     viewModel: AuthViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    var phoneNumber = remember { mutableStateOf("") }
-    var password = remember { mutableStateOf("") }
-    var isLoading = remember { mutableStateOf(false) }
-    var passwordVisibility = remember { mutableStateOf(false) }
-    var phoneError = remember { mutableStateOf(false) }
-    var passwordError = remember { mutableStateOf(false) }
+    val phoneNumber = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+    val isLoading = remember { mutableStateOf(false) }
+    val passwordVisibility = remember { mutableStateOf(false) }
+    val phoneError = remember { mutableStateOf(false) }
+    val passwordError = remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     // Animated Vector
@@ -81,28 +85,33 @@ fun LoginScreen(
             } else {
                 // Show error message
                 Log.e("LoginScreen", "Invalid phone number or password")
-                Toast.makeText(context, "Invalid phone number or password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Invalid phone number or password", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
 
     Column(
         modifier = Modifier
-            .background(Color(0xFFF5F5F5))
             .fillMaxSize()
+            .background(Color(0xFFF5F5F5))
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         // Animated Icon
         imageBitmap?.let {
             Image(
                 bitmap = it,
                 contentDescription = "Animated Icon",
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(24.dp))
+
 
         // Phone Number Input
         OutlinedTextField(
@@ -112,7 +121,12 @@ fun LoginScreen(
                 phoneError.value = it.length != 11
             },
             label = { Text("Phone Number") },
-            leadingIcon = { Icon(painterResource(id = R.drawable.baseline_smartphone_24), contentDescription = "Phone") },
+            leadingIcon = {
+                Icon(
+                    painterResource(id = R.drawable.baseline_smartphone_24),
+                    contentDescription = "Phone"
+                )
+            },
             singleLine = true,
             isError = phoneError.value,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -121,8 +135,14 @@ fun LoginScreen(
             ),
             modifier = Modifier.fillMaxWidth()
         )
-        if (phoneError.value) Text("Enter a valid 11-digit phone number", color = Color.Red, fontSize = 12.sp)
-        Spacer(modifier = Modifier.height(8.dp))
+        if (phoneError.value) Text(
+            "Enter a valid 11-digit phone number",
+            color = Color.Red,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Password Input
         OutlinedTextField(
@@ -132,11 +152,20 @@ fun LoginScreen(
                 passwordError.value = it.length < 6
             },
             label = { Text("Password") },
-            leadingIcon = { Icon(painterResource(id = R.drawable.baseline_lock_24), contentDescription = "Password") },
+            leadingIcon = {
+                Icon(
+                    painterResource(id = R.drawable.baseline_lock_24),
+                    contentDescription = "Password"
+                )
+            },
             trailingIcon = {
                 IconButton(onClick = { passwordVisibility.value = !passwordVisibility.value }) {
-                    val icon = if (passwordVisibility.value) R.drawable.baseline_visibility_24 else R.drawable.baseline_visibility_off_24
-                    Icon(painterResource(id = icon), contentDescription = "Toggle Password Visibility")
+                    val icon =
+                        if (passwordVisibility.value) R.drawable.baseline_visibility_24 else R.drawable.baseline_visibility_off_24
+                    Icon(
+                        painterResource(id = icon),
+                        contentDescription = "Toggle Password Visibility"
+                    )
                 }
             },
             singleLine = true,
@@ -148,10 +177,16 @@ fun LoginScreen(
             visualTransformation = if (passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
         )
-        if (passwordError.value) Text("Password must be at least 6 characters", color = Color.Red, fontSize = 12.sp)
+        if (passwordError.value) Text(
+            "Password must be at least 6 characters",
+            color = Color.Red,
+            fontSize = 12.sp,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Login Button
+        // Login Button with Loading Indicator
         Button(
             onClick = {
                 isLoading.value = true
@@ -161,17 +196,28 @@ fun LoginScreen(
                 )
                 isLoading.value = false
             },
-            enabled = !isLoading.value && phoneNumber.value.isNotEmpty() && password.value.isNotEmpty() && !phoneError.value && !passwordError.value,
+            enabled = !isLoading.value && phoneNumber.value.isNotEmpty() &&
+                    password.value.isNotEmpty() && !phoneError.value && !passwordError.value,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Login")
+            if (isLoading.value) {
+                CircularProgressIndicator(
+                    color = Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+            } else {
+                Text("Login")
+            }
         }
-        Spacer(modifier = Modifier.height(8.dp))
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         // Sign-Up Navigation
         TextButton(onClick = { navController.navigate(SignUpNavigation.route) }) {
             Text("Don't have an account? Sign up")
         }
+
+
     }
 
     // Loading Indicator (Full Screen)

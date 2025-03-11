@@ -1,13 +1,14 @@
-package com.example.martapp.data.repository.model
+package com.example.martapp.data.repository
 
-import com.example.martapp.data.repository.database.CartDao
-import com.example.martapp.data.repository.database.CartItemEntity
+import com.example.martapp.data.repository.database.cart.CartDao
+import com.example.martapp.data.repository.database.cart.CartItemEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class CartRepository @Inject constructor(private val cartDao: CartDao) {
+
 
     suspend fun addToCart(cartItem: CartItemEntity) {
         cartDao.insertCartItem(cartItem)
@@ -22,6 +23,7 @@ class CartRepository @Inject constructor(private val cartDao: CartDao) {
     suspend fun updateCartItem(productId: Int, quantity: Int, totalPrice: Double) {
         cartDao.updateCartItem(productId, quantity, totalPrice)
     }
+
 
     suspend fun clearCart() {
         cartDao.clearCart()

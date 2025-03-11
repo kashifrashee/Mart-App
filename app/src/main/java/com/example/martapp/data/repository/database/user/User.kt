@@ -1,4 +1,4 @@
-package com.example.martapp.data.repository.database
+package com.example.martapp.data.repository.database.user
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
