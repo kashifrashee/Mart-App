@@ -34,10 +34,6 @@ Mart App is a modern e-commerce application built using **Jetpack Compose, MVVM 
 3. Sync Gradle and install dependencies.
 4. Run the app on an emulator or device.
 
-## 📸 Screenshots
-
-(Add images of your app here)
-
 ## 📌 To-Do
 
 - [ ] Implement checkout & payment integration.
